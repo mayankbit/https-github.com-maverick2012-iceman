@@ -70,7 +70,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 				feed = oDataAccess.readFeed(XS_OFFERING_TABLE, "InstructorDetails", filter,
 						null);
 			} else {
-				filter = "UpdatedOn eq datetime'9999-12-31T00:00:00' and LegalEntity eq 'FT'";
+				filter = "UpdatedOn eq datetime'9999-12-31T00:00:00' and LegalEntity eq 'FT'"; 
 				logger.error("offering time marker 1: "+new Date(System.currentTimeMillis()));
 				feed = oDataAccess
 						.readFeed(XS_OFFERING_TABLE, "InstructorDetails", filter, null);
