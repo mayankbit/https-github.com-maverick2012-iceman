@@ -349,7 +349,7 @@ public class ItemServlet {
 			}
 		}
 
-	}
+	} 
 
 	private List<Item> getListFinalData(List<Item> itemDataList,String date) { 
 		logger.error("D5"+date); 
