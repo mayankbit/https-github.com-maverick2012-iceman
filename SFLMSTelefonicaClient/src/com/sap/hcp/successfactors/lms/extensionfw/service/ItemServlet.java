@@ -352,7 +352,7 @@ public class ItemServlet {
 	}
 
 	private List<Item> getListFinalData(List<Item> itemDataList,String date) { 
-		logger.error("D5"+date);
+		logger.error("D5"+date); 
 		List<Offering> dataList;
 		dataList = newofferingservice.getOfferingData("none", "none", date,
 				"none", false);
