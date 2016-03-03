@@ -106,6 +106,7 @@ public class ODataToListConverter {
 		Calendar morningEndDate = (Calendar) entryDetails.get("FirstDayMorningEndDateTime");
 		Calendar afterNoonStartDate = (Calendar) entryDetails.get("FirstDayAfternoonStartDateTime");
 		Calendar afterNoonEndDate = (Calendar) entryDetails.get("FirstDayAfternoonEndDateTime");
+		Calendar updatedOn=(Calendar) entryDetails.get("updatedOn");
 //		Calendar morning
 		offeringData.setId((Long) entryDetails.get("Id"));
 		offeringData.setOfferingCode((Integer)entryDetails.get("OfferingCode"));
@@ -123,6 +124,9 @@ public class ODataToListConverter {
 		offeringData.setNumberOfParticipants((Integer) entryDetails.get("NumberOfParticipants"));
 		offeringData.setTotalCount((Integer) entryDetails.get("TotalCount"));
 		offeringData.setCreationDate(creationDate.getTime());
+		if(updatedOn!=null){
+		offeringData.setUpdatedOn(updatedOn.getTime());
+		}
 		offeringData.setDeliveryMethod((String) entryDetails.get("DeliveryMethod"));
 		offeringData.setFacilityAddress((String) entryDetails.get("FacilityAddress"));
 		offeringData.setFacilityCity((String) entryDetails.get("FacilityCity"));

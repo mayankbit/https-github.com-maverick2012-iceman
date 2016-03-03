@@ -60,6 +60,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 	@Override
 	public List<Offering> getOfferingData(String id, String legalEntity,
 			String date, String days, boolean checkForInstructor) {
+		logger.error("D1"+date);
 		List<Offering> allOfferingData = new ArrayList<Offering>();
 		try {
 			ODataClientService oDataAccess = getODataService();
@@ -84,6 +85,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 					for(Instructor instructor : offeringData.getInstructor()) {
 						empIds.add(instructor.getInstructorID());
 					}
+					logger.error("D2"+date);
 					if (validate(id, legalEntity, date, offeringData)) {
 						if(days != null && !"none".equalsIgnoreCase(days)){
 							
@@ -236,6 +238,8 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 
 	private boolean validateDate(String date, Offering offeringData) {
 		if (!"none".equals(date)) {
+			logger.error("D3"+date);
+			logger.error("D9"+date.length());
 			try {
 				Date startDate = changeDateFormat(date.substring(0, 10));
 				Date endDate = changeDateFormat(date.substring(11));
@@ -266,6 +270,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 	}
 
 	private Date changeDateFormat(String dateString) throws ParseException {
+		logger.error("D6"+dateString);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
 		try {

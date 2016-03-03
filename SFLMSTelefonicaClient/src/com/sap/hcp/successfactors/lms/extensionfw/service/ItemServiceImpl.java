@@ -67,7 +67,7 @@ public class ItemServiceImpl implements ItemService{
 					filter="UpdatedOn eq datetime'9999-12-31T05:00:00' and LegalEntity eq 'FT'";
 					feed = oDataAccess.readFeed(XS_ITEM_TABLE, null, filter,
 							null);
-				/*	feed = oDataAccess.readFeed(XS_ITEM_TABLE, null, filter,
+			/*		feed = oDataAccess.readFeed(XS_ITEM_TABLE, null, filter,
 							null,null,1000);
 					int skip = 1000; 
 					do{
@@ -81,6 +81,7 @@ public class ItemServiceImpl implements ItemService{
 							flag = 1;
 					}while(flag==1);*/
 				}
+				bigFeed.add(feed);
 				logger.error("item time marker 2: "+new Date(System.currentTimeMillis()));
 				List<Item> meriList = new ArrayList<Item>();
 				meriList=removeDuplicates(bigFeed);
@@ -144,7 +145,8 @@ public class ItemServiceImpl implements ItemService{
 	}
 	
 	private boolean validateDate(String date, Item itemData) {
-		if(!"none".equals(date)) {
+		return true;
+/*		if(!"none".equals(date)) {
 			try {
 				Date startDate = changeDateFormat(date.substring(0, 10));
 				Date endDate = changeDateFormat(date.substring(11));
@@ -167,7 +169,7 @@ public class ItemServiceImpl implements ItemService{
 								
 		}  else {
 			return true;
-		}
+		}*/
 	}
 	
 	private Date changeDateFormat(String dateString) throws ParseException {

@@ -412,7 +412,29 @@ sap.ui.core.mvc.Controller
 						var legalEntity = overviewTable.getModel().getData()[rowNo].legalEntity;
 						var opt = this.getView().byId("selOptionForm")
 								.getModel().getData();
-
+//
+						var dateSel = opt.dateSelection;
+                        if (dateSel) {
+                              var from = dateSel.split("-")[0];
+                              /*.replace(
+                                          /[(^\s+)(\s+$)]/g, "");*/
+                              var to = dateSel.split("-")[1];
+                              /*.replace(
+                                          /[(^\s+)(\s+$)]/g, "");*/
+                              var df1 = sap.ui.core.format.DateFormat
+                                          .getDateInstance();
+                              var df2 = sap.ui.core.format.DateFormat
+                                          .getDateInstance({
+                                                pattern : "dd-MM-yyyy",
+                                                style : "medium"
+                                          });
+                              dateSel = df2.format(df1.parse(from)) + "-"
+                                          + df2.format(df1.parse(to));
+                        }
+				
+						
+						
+//					
 						if (legalEntity) {
 							var LE = legalEntity;
 						} else {
@@ -438,7 +460,7 @@ sap.ui.core.mvc.Controller
 						}
 
 						if (opt.dateSelection) {
-							var dateSelection = opt.dateSelection;
+							var dateSelection = dateSel;
 						} else {
 							dateSelection = "none";
 						}

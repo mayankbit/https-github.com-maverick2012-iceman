@@ -158,6 +158,8 @@ public class NewOfferingServlet {
 			if (bool != null && "true".equals(bool)){
 					offering.setItemCode1(mayankkamap.get(offering.getItemCode()).getItemCode1());
 					offering.setItemTitle(mayankkamap.get(offering.getItemCode()).getItemTitle());
+					logger.error("P1"+offering.getItemCode1());
+					logger.error("P2"+offering.getItemCode1());
 			}
 				finalDataList.add(offering);
 		}
@@ -184,11 +186,16 @@ public class NewOfferingServlet {
 		Map<String, String> mp = getItemOfferingListData();
 		List<Offering> finalDataList = new ArrayList<Offering>();
 		for (Offering offer : dataList) {
+			logger.error("T1"+offer.getOfferingId());
+			logger.error("T2"+offer.getItemCode());
 			String bool;
 			bool = mp.get(offer.getItemCode());
 			if (bool != null && "true".equals(bool)){
-				finalDataList.add(offer);
+//				finalDataList.add(offer);
+				logger.error("T3"+offer.getOfferingId());
+				logger.error("T4"+offer.getItemCode());
 			}
+			finalDataList.add(offer);
 		}
 		HttpSession batman = request.getSession(true);
 		batman.setAttribute(NEW_OFFERING_LIST, finalDataList);
@@ -444,11 +451,11 @@ public class NewOfferingServlet {
 	//	logger.error("L1"+itemDataList.size());
 		Map<String, String> mp = new HashMap<String, String>();
 		for (Item item : itemDataList) {
-			//logger.error("L2"+item.getItemCode());
+			logger.error("L2"+item.getItemCode());
 			mp.put((String)item.getItemCode(), "true");
 			mayankkamap.put((String)item.getItemCode(), item);
 		}
-	//	logger.error("L3"+mp.size());
+		logger.error("L3"+mp.size());
 		return mp;
 
 	}

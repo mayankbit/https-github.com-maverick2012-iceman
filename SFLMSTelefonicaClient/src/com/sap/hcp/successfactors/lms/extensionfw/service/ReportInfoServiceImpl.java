@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.slf4j.Logger;
@@ -99,39 +100,52 @@ private static final Logger logger = LoggerFactory.getLogger(ReportInfoServiceIm
 		} else if(!"none".equalsIgnoreCase(legalEntity)) {
 			queryBuilder.append(" where reportInfo.legalEntity=:legalEntity");
 		}*/
-		if(!id.equalsIgnoreCase("none"))
-			queryBuilder.append(" and reportInfo.id = '"+id+"'");
-		if(!legalEntity.equalsIgnoreCase("none"))
-			queryBuilder.append(" and reportInfo.legalEntity = '"+legalEntity+"'");
+		Date startDate = null;
+		Date endDate = null;
+		boolean flag1 = false, flag2 = false, flag3 = false;
+		if(!id.equalsIgnoreCase("none")){
+			queryBuilder.append(" and reportInfo.id = :arg1"); flag1= true;
+		}
+		if(!legalEntity.equalsIgnoreCase("none")){
+			queryBuilder.append(" and reportInfo.legalEntity = :arg2"); flag2= true;
+		}
 		if(!date.equalsIgnoreCase("none")){
-			Date startDate = null;
-			Date endDate = null;
 			try {
-				startDate = changeDateFormat(date.substring(0, 10));
-				endDate = changeDateFormat(date.substring(11));
+				startDate = changeDateFormat(date.substring(0, 10).replaceAll("-", "."));
+				endDate = changeDateFormat(date.substring(11).replaceAll("-", "."));
+				logger.error(startDate+" aman "+endDate);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			if(startDate != null && endDate != null)
-				queryBuilder.append(" and reportInfo.createdDate >= '"+startDate+"' and reportInfo.createdDate <= '"+endDate+"'"); 
+			if(startDate != null && endDate != null){
+				queryBuilder.append(" and reportInfo.createdDate BETWEEN :arg3 AND :arg4"); flag3= true;
+			}
 		}
+		logger.error(queryBuilder.toString());
 		Query query=entityManager.createQuery(queryBuilder.toString());
-	    List<ReportInfo> queryReportInfo=query.getResultList();
+		if(flag1)
+			query.setParameter("arg1", id);
+		if(flag2)
+			query.setParameter("arg2", legalEntity);
+		if(flag3){
+			query.setParameter("arg3", startDate, TemporalType.DATE).setParameter("arg4", endDate, TemporalType.DATE);
+		}
+	    List<ReportInfo> queryReportInfo = (List<ReportInfo>) query.getResultList();
 		return queryReportInfo;
 	}
 	
 	private Date changeDateFormat(String dateString) throws ParseException {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 
 		try {
 
-			Date date = formatter.parse(dateString);
-			return date;
+		Date date = formatter.parse(dateString);
+		return date;
 
 		} catch (ParseException e) {
-			throw e;
+		throw e;
 		}
 
-	}
+		}
 
 }

@@ -99,7 +99,7 @@ public class ItemServlet {
 				itemidmap = convertListToMap(itemidlist);
 			}
 			itemList = getListData(itemList);
-			itemList = getListFinalData(itemList);
+			itemList = getListFinalData(itemList,date);
 			List<Item> tempList = new ArrayList<Item>();
 			tempList.addAll(itemList);
 			
@@ -128,7 +128,7 @@ public class ItemServlet {
 			}
 		
 			itemList = getListData(itemList);
-			itemList = getListFinalData(itemList);
+			itemList = getListFinalData(itemList,date);
 		/*	List<ItemListId> itemListIds = itemListIdService.getByReportId(Long.parseLong(runId));
 			List<Long> itemIds = new ArrayList<Long>();
 			logger.error("M1"+itemListIds.size());
@@ -210,6 +210,7 @@ public class ItemServlet {
 		Gson gson = builder.registerTypeAdapter(Date.class,
 				new UTCDateTypeAdapter()).create();
 		List<Item> itemDataList;
+		logger.error("DT1"+date);
 		Map<String, String> itemidmap = new HashMap<String, String>();
 		if ("none".equalsIgnoreCase(runId)) {
 			HttpSession batman = request.getSession(false);
@@ -226,7 +227,10 @@ public class ItemServlet {
 				itemidmap = convertListToMap(itemidlist);
 			}
 			itemDataList = getListData(itemDataList);
-			itemDataList = getListFinalData(itemDataList);
+			logger.error("DT2"+date);
+			logger.error("MK2"+itemDataList.size());
+			itemDataList = getListFinalData(itemDataList,date);
+			logger.error("MK1"+itemDataList.size());
 			List<Item> tempList = new ArrayList<Item>();
 			tempList.addAll(itemDataList);
 			
@@ -253,7 +257,7 @@ public class ItemServlet {
 			}
 		
 			itemDataList = getListData(itemDataList);
-			itemDataList = getListFinalData(itemDataList);
+			itemDataList = getListFinalData(itemDataList,date);
 		}
 		List<JsonObject> jsonList = new ArrayList<JsonObject>();
 		getJsonList(jsonList,itemDataList, legalEntity);
@@ -271,7 +275,7 @@ public class ItemServlet {
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.registerTypeAdapter(Date.class,
 				new UTCDateTypeAdapter()).create();
-
+		logger.error("DT5"+date);
 		List<Item> itemDataList;
 		itemDataList = itemservice.getItemData(id, legalEntity, date, "none");
 		List<ItemListId> itemidlist;
@@ -283,7 +287,8 @@ public class ItemServlet {
 		batman.setAttribute("itemidmap", itemidmap);
 		List<OverviewScreen> overviewScreenList = new ArrayList<OverviewScreen>();
 		itemDataList = getListData(itemDataList);
-		itemDataList = getListFinalData(itemDataList);
+		logger.error("DT4"+date);
+		itemDataList = getListFinalData(itemDataList,date);
 		createOverviewList(itemDataList, overviewScreenList, legalEntity, itemidmap);
 		logger.error("item time marker 3: "+new Date(System.currentTimeMillis()));
 		response.setContentType("application/json; charset=utf-8");
@@ -346,10 +351,10 @@ public class ItemServlet {
 
 	}
 
-	private List<Item> getListFinalData(List<Item> itemDataList) {
-
+	private List<Item> getListFinalData(List<Item> itemDataList,String date) { 
+		logger.error("D5"+date);
 		List<Offering> dataList;
-		dataList = newofferingservice.getOfferingData("none", "none", "none",
+		dataList = newofferingservice.getOfferingData("none", "none", date,
 				"none", false);
 		List<Item> itemFinalDataList = new ArrayList<Item>();
 
