@@ -356,7 +356,7 @@ public class ItemServlet {
 		List<Offering> dataList;
 		dataList = newofferingservice.getOfferingData("none", "none", date,
 				"none", false);
-		List<Item> itemFinalDataList = new ArrayList<Item>();  
+		List<Item> itemFinalDataList = new ArrayList<Item>();      
 
 		for (Item item : itemDataList) {
 			if(item.getDelMethod().equalsIgnoreCase("online")){
