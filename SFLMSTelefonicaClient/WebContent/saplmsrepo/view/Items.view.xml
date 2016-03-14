@@ -195,31 +195,31 @@ xmlns="sap.m"-->
 					<Column width="11rem">
 						<m:Label text="{i18n>OfferingCode}"/>
 						<template>
-							<m:Text text="{OfferingCode}"/>
+							<m:Text text="{codGrupoAccion}"/>
 						</template>
 					</Column>
 					<Column width="11rem">
 						<m:Label text="{i18n>URISSF}"/>
 						<template>
-							<m:Text text="{URISSF}"/>
+							<m:Text text="{uri}"/>
 						</template>
 					</Column>
 					<Column width="11rem">
 						<m:Label text="{i18n>SSFUname}"/>
 						<template>
-							<m:Text text="{SSFUname}"/>
+							<m:Text text="{usuario"/>
 						</template>
 					</Column>
 					<Column width="11rem">
 						<m:Label text="{i18n>SSFPassword}"/>
 						<template>
-							<m:Text text="{SSFPassword}"/>
+							<m:Text text="{password}"/>
 						</template>
 					</Column>	
 					<Column width="11rem">
 						<m:Label text="{i18n>TypeOfItem}"/>
 						<template>
-							<m:Text text="{TypeOfItem}"/>
+							<m:Text text="{tipoAccion}"/>
 						</template>
 					</Column>
 					<Column width="11rem">
@@ -231,13 +231,13 @@ xmlns="sap.m"-->
 					<Column width="11rem">
 						<m:Label text="{i18n>TradeUnionAgr}"/>
 						<template>
-							<m:Text text="{TradeUnionAgr}"/>
+							<m:Text text="{informaRLT"/>
 						</template>
 					</Column>
 					<Column width="11rem">
 						<m:Label text="{i18n>TradeUnionRep}"/>
 						<template>
-							<m:Text text="{TradeUnionRep}"/>
+							<m:Text text="{valorinf}"/>
 						</template>
 					</Column>					
 				</columns>					
