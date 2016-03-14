@@ -322,19 +322,19 @@ public class Offering {
 	}
 
 	public Date getOfferingCloseDate() {
-		return (Date)offeringCloseDate.clone();
+		return offeringCloseDate;
 	}
 
 	public void setOfferingCloseDate(Date offeringCloseDate) {
-		this.offeringCloseDate = (Date)offeringCloseDate.clone();
+		this.offeringCloseDate = offeringCloseDate;
 	}
 
 	public Date getOfferingCancelledDate() {
-		return (Date)offeringCancelledDate.clone();
+		return offeringCancelledDate;
 	}
 
 	public void setOfferingCancelledDate(Date offeringCancelledDate) {
-		this.offeringCancelledDate = (Date)offeringCancelledDate.clone();
+		this.offeringCancelledDate = offeringCancelledDate;
 	}
 
 	public String getUserProvidedValue() {
