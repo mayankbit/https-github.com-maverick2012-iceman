@@ -137,6 +137,9 @@ public class NewOfferingServlet {
 					if(offeringidmap.get(key) != null && offeringidmap.get(key).equalsIgnoreCase("x")){
 						dataList.remove(offering);
 					}
+					if(offering.getOfferingCancelledDate()!=null||offering.getOfferingCloseDate()!=null)
+						dataList.remove(offering);
+					
 				}
 			}
 			tempList = null;
@@ -195,6 +198,8 @@ public class NewOfferingServlet {
 				logger.error("T3"+offer.getOfferingId());
 				logger.error("T4"+offer.getItemCode());
 			}
+			if(offer.getOfferingCancelledDate()!=null||offer.getOfferingCloseDate()!=null);
+			else
 			finalDataList.add(offer);
 		}
 		HttpSession batman = request.getSession(true);
@@ -247,6 +252,8 @@ public class NewOfferingServlet {
 					String key = matrixKeyMaker(String.valueOf(offering.getId()), legalEntity.toLowerCase());
 					if(offeringidmap.get(key) != null && offeringidmap.get(key).equalsIgnoreCase("x")){
 						dataList.remove(offering);
+						if(offering.getOfferingCancelledDate()!=null||offering.getOfferingCloseDate()!=null)
+							dataList.remove(offering);
 					}
 				}
 			}
