@@ -410,7 +410,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 					sb = new StringBuilder();
 					whetherFirst = true;
 					count = 0;
-					flag=false;
+					flag=false;  
 				}
 			}
 			if(flag){
