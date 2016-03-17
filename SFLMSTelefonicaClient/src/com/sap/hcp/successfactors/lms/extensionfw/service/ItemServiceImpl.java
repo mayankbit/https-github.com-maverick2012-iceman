@@ -58,10 +58,10 @@ public class ItemServiceImpl implements ItemService{
 				String filter = null;
 				int flag=0;
 				if(!"none".equals(id)) {
-					filter = "ItemCode1 eq '" + id + "'";
+					filter = "UpdatedOn eq datetime'9999-12-31T05:00:00' and ItemCode1 eq '" + id + "'";
 					feed = oDataAccess.readFeed(XS_ITEM_TABLE, null, filter,
 							null);
-					bigFeed.add(feed);
+					//bigFeed.add(feed);
 				} else {
 					logger.error("item time marker 1: "+new Date(System.currentTimeMillis()));
 					filter="UpdatedOn eq datetime'9999-12-31T05:00:00' and LegalEntity eq 'FT'";
@@ -226,7 +226,7 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public List<Item> getItemByItemIds(List<Long> itemIds) {
 		List<Item> itemList = new ArrayList<Item>();
-
+		boolean flag=false;
 		
 		if (itemIds.isEmpty())
 			return itemList;
@@ -238,6 +238,7 @@ public class ItemServiceImpl implements ItemService{
 			boolean whetherFirst = true;
 			int count = 0;
 			for(Long itemId : itemIds) {
+				flag=true;
 				if(!whetherFirst) {
 					sb.append(" or Id eq ");
 					sb.append(itemId);
@@ -254,7 +255,13 @@ public class ItemServiceImpl implements ItemService{
 					sb = new StringBuilder();
 					whetherFirst = true;
 					count = 0;
+					flag=false;
 				}
+			}
+			if(flag){
+				String filter=sb.toString();
+				feed=oDataAccess.readFeed(XS_ITEM_TABLE, null, filter, null);
+				bigfeed.add(feed);
 			}
 			for(ODataFeed finalfeed : bigfeed){
 				
