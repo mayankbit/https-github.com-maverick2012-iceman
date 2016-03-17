@@ -60,7 +60,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 	@Override
 	public List<Offering> getOfferingData(String id, String legalEntity,
 			String date, String days, boolean checkForInstructor) {
-		logger.error("D1"+date);
+
 		List<Offering> allOfferingData = new ArrayList<Offering>();
 		try {
 			ODataClientService oDataAccess = getODataService();
@@ -85,7 +85,6 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 					for(Instructor instructor : offeringData.getInstructor()) {
 						empIds.add(instructor.getInstructorID());
 					}
-					logger.error("D2"+date);
 					if (validate(id, legalEntity, date, offeringData)) {
 						if(days != null && !"none".equalsIgnoreCase(days)){
 							
@@ -382,7 +381,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 	@Override
 	public List<Offering> getOfferingByOfferingIds(List<Long> offeringIds) {
 		List<Offering> offeringList = new ArrayList<Offering>();
-
+        boolean flag=false;
 		
 		if (offeringIds.isEmpty())
 			return offeringList;
@@ -394,6 +393,7 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 			boolean whetherFirst = true;
 			int count = 0;
 			for(Long offeringId : offeringIds) {
+				flag=true;
 				if(!whetherFirst) {
 					sb.append(" or Id eq ");
 					sb.append(offeringId);
@@ -410,7 +410,13 @@ public class NewOfferingServiceImpl implements NewOfferingService {
 					sb = new StringBuilder();
 					whetherFirst = true;
 					count = 0;
+					flag=false;
 				}
+			}
+			if(flag){
+				String filter=sb.toString();
+				feed=oDataAccess.readFeed(XS_OFFERING_TABLE, "InstructorDetails", filter, null);
+				bigfeed.add(feed);
 			}
 			for(ODataFeed finalfeed : bigfeed){
 				
