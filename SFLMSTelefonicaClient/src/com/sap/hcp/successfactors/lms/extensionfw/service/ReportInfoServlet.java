@@ -110,7 +110,7 @@ public class ReportInfoServlet {
 	
 	@RequestMapping(value = ApiValues.REPORT_INFO, method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String getReportInfo(@PathVariable String id, @PathVariable String legalEntity, @PathVariable String date,	HttpServletRequest request, HttpServletResponse response)
+	public String getReportInfo(@PathVariable String legalEntity,@PathVariable String id, @PathVariable String date,	HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.registerTypeAdapter(Date.class,
