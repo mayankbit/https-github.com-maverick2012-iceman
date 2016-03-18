@@ -66,7 +66,7 @@ public class ODataToListConverter {
 		itemData.setDelMethod((String) entryDetails.get("DeliveryMethod"));
 		itemData.setCreditHoursScheduled(creditHours);
 		//field will come from offering cpe hrs
-		itemData.setCreditHoursOnline(creditHours);
+		itemData.setCreditHoursOnline(totalHours);
 		itemData.setObservations((String) entryDetails.get("InstructorMaterials"));
 		itemData.setObjectives((String) entryDetails.get("ComponentGoals"));
 		itemData.setConIndex((String) entryDetails.get("Comments"));
@@ -101,6 +101,9 @@ public class ODataToListConverter {
 		Calendar creationDate = (Calendar) entryDetails.get("CreationDate");
 		Calendar startDate = (Calendar) entryDetails.get("OfferingStartDate");
 		Calendar endDate = (Calendar) entryDetails.get("OfferingEndDate");
+		Calendar cancelledDate=(Calendar) entryDetails.get("OfferingCancelledDate");
+		Calendar closeDate=(Calendar) entryDetails.get("OfferingCloseDate");
+				
 		
 		Calendar morningStartDate = (Calendar) entryDetails.get("FirstDayMorningStartDateTime");
 		Calendar morningEndDate = (Calendar) entryDetails.get("FirstDayMorningEndDateTime");
@@ -137,6 +140,12 @@ public class ODataToListConverter {
 		offeringData.setFacilityComments((String) entryDetails.get("FacilityComments"));
 		if(entryDetails.get("ScheduleOfferingContact") != null)
 		offeringData.setScheduleOfferingContact((String) entryDetails.get("ScheduleOfferingContact"));
+		if(cancelledDate!=null){
+			offeringData.setOfferingCancelledDate(cancelledDate.getTime());
+		}
+		if(closeDate!=null){
+			offeringData.setOfferingCloseDate(closeDate.getTime());
+		}
 		if(afterNoonEndDate!= null) {
 			//afterNoonEndDate.add(Calendar.HOUR, 2);
 			offeringData.setFirstDayAfternoonEndDateTime(afterNoonEndDate.getTime());
@@ -172,6 +181,7 @@ public class ODataToListConverter {
 			offeringData.setFirstDayMorningStartDateTime(morningStartDate.getTime());
 			
 		}
+	
 		if("ONLINE".equals(offeringData.getDeliveryMethod())){
 			offeringData.setNumberOfParticipants(80);
 		} else {
@@ -230,8 +240,8 @@ public class ODataToListConverter {
 		offeringData.setLegalEntity((String) entryDetails.get("LegalEntity"));
 		offeringData.setLocationName((String) entryDetails.get("LocationName"));
 		offeringData.setObservations((String) entryDetails.get("Observations"));
-		offeringData.setOfferingCancelledDate(new Date((new Date()).getTime() - (1000 * 60 * 60 * 5)));
-		offeringData.setOfferingCloseDate(new Date((new Date()).getTime() - (1000 * 60 * 60 * 5)));
+		/*offeringData.setOfferingCancelledDate("OfferingCancelledDate");
+		offeringData.setOfferingCloseDate("OfferingCloseDate");*/
 		offeringData.setOfferingEndDate(endDate.getTime());
 		offeringData.setOfferingStartDate(startDate.getTime());
 		offeringData.setScheduleDesc((String) entryDetails.get("ScheduleDesc"));
