@@ -103,7 +103,8 @@ private static final Logger logger = LoggerFactory.getLogger(ReportInfoServiceIm
 		Date startDate = null;
 		Date endDate = null;
 		boolean flag1 = false, flag2 = false, flag3 = false;
-		if(!id.equalsIgnoreCase("none")){
+		logger.error("Id"+id);
+		if(!"none".equals(id)){
 			queryBuilder.append(" and reportInfo.id = :arg1"); flag1= true;
 		}
 		if(!legalEntity.equalsIgnoreCase("none")){
@@ -123,8 +124,10 @@ private static final Logger logger = LoggerFactory.getLogger(ReportInfoServiceIm
 		}
 		logger.error(queryBuilder.toString());
 		Query query=entityManager.createQuery(queryBuilder.toString());
-		if(flag1)
-			query.setParameter("arg1", id);
+		if(flag1) {
+			Long idLong = Long.parseLong(id);
+			query.setParameter("arg1", idLong);
+		}
 		if(flag2)
 			query.setParameter("arg2", legalEntity);
 		if(flag3){
