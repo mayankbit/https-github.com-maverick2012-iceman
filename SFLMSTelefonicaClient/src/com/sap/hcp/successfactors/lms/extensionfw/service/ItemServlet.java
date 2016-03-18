@@ -118,30 +118,35 @@ public class ItemServlet {
 //				itemList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), obj.getDate(), runId);
 //			}
 //			else
-			{
+			//{
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 				String date2 = formatter.format(obj.getCreatedDate());
 				StringBuilder sb = new StringBuilder();
 				sb.append("15-08-1947-");
 				sb.append(date2);
-				itemList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), sb.toString(), runId);
-			}
+				//itemList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), sb.toString(), runId);
+				List<ItemListId> itemListId=new ArrayList<ItemListId>();
+				
+				itemListId=itemListIdService.getByReportId(Long.parseLong(runId));
+				List<Long> itemId=new ArrayList<Long>();
+				for(ItemListId entry:itemListId){
+					itemId.add(entry.getItemId());
+				}
+				itemList=itemservice.getItemByItemIds(itemId);
+		//	}
 		
 			itemList = getListData(itemList);
 			itemList = getListFinalData(itemList,date);
 		/*	List<ItemListId> itemListIds = itemListIdService.getByReportId(Long.parseLong(runId));
 			List<Long> itemIds = new ArrayList<Long>();
-			logger.error("M1"+itemListIds.size());
 			for(ItemListId itemListId : itemListIds) {
 				itemIds.add(itemListId.getItemId());
 			}
-			logger.error("M2"+itemIds.size());
 			itemList = itemservice.getItemByItemIds(itemIds);
 			logger.error("M3"+itemList.size());
 			itemList = getListData(itemList);
-			logger.error("M4"+itemList.size());
 			itemList = getListFinalData(itemList);
-			logger.error("M5"+itemList.size());*/
+			*/
 		}
 
 		parameterizedList = parameterised.getAllParametrisedData();
@@ -210,7 +215,6 @@ public class ItemServlet {
 		Gson gson = builder.registerTypeAdapter(Date.class,
 				new UTCDateTypeAdapter()).create();
 		List<Item> itemDataList;
-		logger.error("DT1"+date);
 		Map<String, String> itemidmap = new HashMap<String, String>();
 		if ("none".equalsIgnoreCase(runId)) {
 			HttpSession batman = request.getSession(false);
@@ -227,10 +231,7 @@ public class ItemServlet {
 				itemidmap = convertListToMap(itemidlist);
 			}
 			itemDataList = getListData(itemDataList);
-			logger.error("DT2"+date);
-			logger.error("MK2"+itemDataList.size());
 			itemDataList = getListFinalData(itemDataList,date);
-			logger.error("MK1"+itemDataList.size());
 			List<Item> tempList = new ArrayList<Item>();
 			tempList.addAll(itemDataList);
 			
@@ -244,17 +245,26 @@ public class ItemServlet {
 			}
 		} else {
 			ReportInfo obj = reportInfoService.getById(Long.parseLong(runId));
-			if(date != null && !date.equalsIgnoreCase("none")){
-				itemDataList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), obj.getDate(), runId);
-			}
-			else{
+		//	if(date != null && !date.equalsIgnoreCase("none")){
+		//		itemDataList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), obj.getDate(), runId);
+			//}
+		//	else
+			{
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 				String date2 = formatter.format(obj.getCreatedDate());
 				StringBuilder sb = new StringBuilder();
 				sb.append("15-08-1947-");
 				sb.append(date2);
-				itemDataList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), sb.toString(), runId);
+			//	itemDataList = itemservice.getItemData(obj.getCriteriaId(), obj.getLegalEntity(), sb.toString(), runId);
 			}
+			List<ItemListId> itemListId=new ArrayList<ItemListId>();
+			
+			itemListId=itemListIdService.getByReportId(Long.parseLong(runId));
+			List<Long> itemId=new ArrayList<Long>();
+			for(ItemListId entry:itemListId){
+				itemId.add(entry.getItemId());
+			}
+			itemDataList=itemservice.getItemByItemIds(itemId);
 		
 			itemDataList = getListData(itemDataList);
 			itemDataList = getListFinalData(itemDataList,date);
@@ -271,11 +281,9 @@ public class ItemServlet {
 			@PathVariable String legalEntity, @PathVariable String date,
 			HttpServletResponse response, HttpServletRequest request)
 			throws IOException {
-		logger.error("item time marker 0: "+new Date(System.currentTimeMillis()));
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.registerTypeAdapter(Date.class,
 				new UTCDateTypeAdapter()).create();
-		logger.error("DT5"+date);
 		List<Item> itemDataList;
 		itemDataList = itemservice.getItemData(id, legalEntity, date, "none");
 		List<ItemListId> itemidlist;
@@ -287,10 +295,8 @@ public class ItemServlet {
 		batman.setAttribute("itemidmap", itemidmap);
 		List<OverviewScreen> overviewScreenList = new ArrayList<OverviewScreen>();
 		itemDataList = getListData(itemDataList);
-		logger.error("DT4"+date);
 		itemDataList = getListFinalData(itemDataList,date);
 		createOverviewList(itemDataList, overviewScreenList, legalEntity, itemidmap);
-		logger.error("item time marker 3: "+new Date(System.currentTimeMillis()));
 		response.setContentType("application/json; charset=utf-8");
 		return gson.toJson(overviewScreenList);
 	}
@@ -352,7 +358,6 @@ public class ItemServlet {
 	} 
 
 	private List<Item> getListFinalData(List<Item> itemDataList,String date) { 
-		logger.error("D5"+date); 
 		List<Offering> dataList;
 		dataList = newofferingservice.getOfferingData("none", "none", date,
 				"none", false);
@@ -457,17 +462,19 @@ public class ItemServlet {
 				if("9".equals(item.getDelMethod()) || "10".equals(item.getDelMethod())){
 					jsonObject.addProperty(param.getParamName(), param.getParamValue());
 				}
-			} else if ("CIFCentreTSOL".equals(param.getParamName()) && "Tsol".equals(legalEntity)) {
+			}
+		else if ("CIFCentreTSOL".equals(param.getParamName())) {
 				taxid = param.getParamValue();
 				jsonObject.addProperty("taxId", taxid);
 				
-			} else if("TaxCodeTde".equals(param.getParamName()) && "TdE".equals(legalEntity)) {
+			} else if("TaxCodeTde".equals(param.getParamName())) {
 				taxid = param.getParamValue();
 				jsonObject.addProperty("taxId", taxid);	
-			} else if("CIFplaceTME".equals(param.getParamName()) && "TME".equals(legalEntity)) {
+			} else if("CIFplaceTME".equals(param.getParamName())) {
 				taxid = param.getParamValue();
 				jsonObject.addProperty("taxId", taxid);
-			} else {
+			}
+			else {
 				jsonObject.addProperty(param.getParamName(), param.getParamValue());
 			}
 		}
