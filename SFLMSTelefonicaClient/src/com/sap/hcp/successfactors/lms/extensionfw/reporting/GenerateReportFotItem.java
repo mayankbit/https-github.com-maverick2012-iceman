@@ -132,25 +132,30 @@ public class GenerateReportFotItem {
 		deliveryMethod.appendChild(document.createTextNode(item.getDelMethod()));
 		simpleMode.appendChild(deliveryMethod);
 		
-		if("9".equals(item.getDelMethod().trim())) {
+		if("9".equals(item.getDelMethod().trim())||"10".equals(item.getDelMethod())) {
 			Element mixedMode = document.createElement("modalidadMixta");
 			trainingAction.appendChild(mixedMode);   
 
-			Element creditHours = document.createElement("horasPr");
-			Double creditHrs=item.getCreditHoursOnline();
-			if(creditHrs>creditHrs.intValue())    
-				creditHours.appendChild(document.createTextNode(String.valueOf(creditHrs)));
-			else
-				creditHours.appendChild(document.createTextNode(String.valueOf(creditHrs.intValue())));
-			mixedMode.appendChild(creditHours);
-			Element contactHours = document.createElement("horasTe");
-			Double contactHrs=item.getCreditHoursScheduled();
-			if(contactHrs>contactHrs.intValue())
-				contactHours.appendChild(document.createTextNode(String.valueOf(contactHrs)));
-			else
-				contactHours.appendChild(document.createTextNode(String.valueOf(contactHrs.intValue())));
-			mixedMode.appendChild(contactHours);
+			if(item.getCreditHoursScheduled()!=null){
+				Element creditHours = document.createElement("horasPr");
+				Double creditHrs=item.getCreditHoursScheduled();
+				if(creditHrs>creditHrs.intValue())    
+					creditHours.appendChild(document.createTextNode(String.valueOf(creditHrs)));
+				else
+					creditHours.appendChild(document.createTextNode(String.valueOf(creditHrs.intValue())));
+
+				mixedMode.appendChild(creditHours);
+			}
+			if(item.getCreditHoursOnline()!=null){
+				Element contactHours = document.createElement("horasTe");
+				Double contactHrs=item.getCreditHoursOnline();
+				if(contactHrs>contactHrs.intValue())
+					contactHours.appendChild(document.createTextNode(String.valueOf(contactHrs)));
+				else
+					contactHours.appendChild(document.createTextNode(String.valueOf(contactHrs.intValue())));
 			
+			mixedMode.appendChild(contactHours);
+			}
 		}
 
 		
