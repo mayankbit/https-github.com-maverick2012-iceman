@@ -201,13 +201,13 @@ xmlns="sap.m"-->
 					<Column width="11rem">
 						<m:Label text="{i18n>URISSF}"/>
 						<template>
-							<m:Text text="{uri}"/>
+							<m:Text text="{Uri}"/>
 						</template>
 					</Column>
 					<Column width="11rem">
 						<m:Label text="{i18n>SSFUname}"/>
 						<template>
-							<m:Text text="{usuario"/>
+							<m:Text text="{usuario}"/>
 						</template>
 					</Column>
 					<Column width="11rem">
@@ -231,7 +231,7 @@ xmlns="sap.m"-->
 					<Column width="11rem">
 						<m:Label text="{i18n>TradeUnionAgr}"/>
 						<template>
-							<m:Text text="{informaRLT"/>
+							<m:Text text="{informaRLT}"/>
 						</template>
 					</Column>
 					<Column width="11rem">
